@@ -5,7 +5,7 @@
     <nav class="navigation">
       <div class="nav-left">
         <span class="brand-logo" @click="goToHome">
-          NETFLIX <span class="version">2077</span>
+          NETCLONE <span class="version">yeon</span>
         </span>
         
         <div class="nav-links">
@@ -29,7 +29,7 @@
             <transition name="fade">
               <div v-if="showDropdown" class="dropdown">
                 <div class="dropdown-item" @click.stop="handleLogout">
-                  LOGOUT [시스템 종료]
+                  LOGOUT 
                 </div>
               </div>
             </transition>

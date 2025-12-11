@@ -12,7 +12,7 @@
         <transition name="glitch-fade" mode="out-in">
           
           <form v-if="isLogin" @submit.prevent="handleLogin" key="login">
-            <h1 class="brand-title">NETFLIX <span class="version">yeon</span></h1>
+            <h1 class="brand-title">NETCLONE <span class="version">yeon</span></h1>
             <h2 class="form-title">SYSTEM ACCESS</h2>
             
             <div class="input-group-animate delay-1">
