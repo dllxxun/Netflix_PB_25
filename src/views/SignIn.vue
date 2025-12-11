@@ -12,7 +12,7 @@
         <transition name="glitch-fade" mode="out-in">
           
           <form v-if="isLogin" @submit.prevent="handleLogin" key="login">
-            <h1 class="brand-title">NETFLIX <span class="version">2077</span></h1>
+            <h1 class="brand-title">NETFLIX <span class="version">yeon</span></h1>
             <h2 class="form-title">SYSTEM ACCESS</h2>
             
             <div class="input-group-animate delay-1">
@@ -46,7 +46,7 @@
 
             <div class="input-group-animate delay-3">
               <button type="submit" class="cyber-btn">
-                <span class="btn-content">INITIALIZE LOGIN</span>
+                <span class="btn-content">LOGIN</span>
                 <div class="btn-glitch"></div>
               </button>
             </div>
@@ -350,9 +350,9 @@ export default {
 .cyber-input input {
   width: 100%;
   padding: 15px 10px;
-  background: transparent;
+  background: transparent !important;
   border: none;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid rgba(0, 102, 255, 0.5) !important;
   color: #fff;
   font-family: 'Orbitron', sans-serif;
   font-size: 16px;
@@ -360,6 +360,7 @@ export default {
   outline: none;
   z-index: 2;
   position: relative;
+  transition: all 0.3s;
 }
 
 .cyber-input label {
@@ -384,6 +385,25 @@ export default {
   transition: 0.4s;
   transform: translateX(-50%);
   box-shadow: 0 0 10px #0066FF;
+}
+
+/* [핵심 2] 마우스 올리거나 입력 중일 때 진한 파란색 */
+.cyber-input input:focus,
+.cyber-input input:hover,
+.cyber-input input:not(:placeholder-shown) {
+  border-bottom: 1px solid #0066FF !important; /* 찐 파란색 */
+  box-shadow: 0 10px 10px -5px rgba(0, 102, 255, 0.2); /* 아래로 은은한 파란 빛 */
+}
+
+/* [핵심 3] 브라우저 자동완성(Autofill) 시 회색 배경/테두리 강제 제거 (매우 중요!) */
+.cyber-input input:-webkit-autofill,
+.cyber-input input:-webkit-autofill:hover, 
+.cyber-input input:-webkit-autofill:focus, 
+.cyber-input input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #000510 inset !important; /* 배경색을 사이트 배경색(#000510)으로 덮기 */
+    -webkit-text-fill-color: white !important; /* 글자색 흰색 유지 */
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: white;
 }
 
 .cyber-input input:focus ~ .focus-border,
