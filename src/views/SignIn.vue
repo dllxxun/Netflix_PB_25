@@ -182,7 +182,7 @@ export default {
 }
 
 h1 {
-  color: #ff0000;
+  color: #0066FF;
   margin-bottom: 28px;
   font-size: 32px;
 }
@@ -219,7 +219,7 @@ input[type="text"] {
 button {
   width: 104%;
   height: 60px;
-  background-color: #e50914;
+  background-color: #0066FF;
   color: white;
   border: none;
   border-radius: 4px;
@@ -230,7 +230,7 @@ button {
 }
 
 button:hover {
-  background-color: #c04040;
+  background-color: #0066FF;
 }
 
 .switch-form {

@@ -192,7 +192,7 @@ export default {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #e50914;
+  background-color: #0066FF;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -202,6 +202,6 @@ export default {
 }
 
 .scroll-top:hover {
-  background-color: #ff0a16;
+  background-color: #0066FF;
 }
 </style>

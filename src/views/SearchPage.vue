@@ -310,14 +310,14 @@ export default {
 }
 
 .reset-button {
-  background-color: #e74c3c;
+  background-color: #0066FF;
   color: white;
   border: none;
   cursor: pointer;
 }
 
 .reset-button:hover {
-  background-color: #c0392b;
+  background-color: #0066FF;
 }
 
 .movies-grid {
@@ -421,7 +421,7 @@ export default {
 }
 
 .remove-search:hover {
-  color: #ff0000;
+  color: #0066FF;
 }
 
 /* filters 클래스에 position: relative 추가 */
@@ -468,6 +468,6 @@ export default {
 }
 
 .remove-btn:hover {
-  color: #ff0000;
+  color: #0066FF;
 }
 </style>

@@ -163,7 +163,7 @@ export default {
 
 .slider-controls button {
   padding: 10px 20px;
-  background-color: #e50914;
+  background-color: #0066FF;
   color: white;
   border: none;
   border-radius: 4px;
@@ -186,7 +186,7 @@ export default {
 }
 
 .badge.new {
-  background-color: #e50914;
+  background-color: #0066FF;
 }
 
 .badge.hot {

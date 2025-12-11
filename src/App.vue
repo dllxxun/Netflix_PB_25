@@ -121,7 +121,7 @@ body {
 }
 
 .home-link {
-  color: #bb1616;
+  color: #0066FF;
   font-weight: 800;
   font-size: xx-large;
   cursor: pointer;
@@ -134,7 +134,7 @@ body {
 }
 
 .wishlist-link:hover {
-  color: #ff0000;
+  color: #0066FF;
 }
 
 .popular-link {
@@ -144,7 +144,7 @@ body {
 }
 
 .popular-link:hover {
-  color: #ff0000;
+  color: #0066FF;
 }
 
 .nav-right {
@@ -232,7 +232,7 @@ a:hover {
 
 /* 활성 링크 스타일 */
 .router-link-active {
-  color: #e50914;
+  color: #0066FF;
 }
 
 
