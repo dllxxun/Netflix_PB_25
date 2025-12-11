@@ -16,7 +16,16 @@
           </div>
 
           <div class="text-section">
-            <h1 class="movie-title">{{ movie.title }}</h1>
+            
+            <div class="title-area">
+              <h1 class="movie-title">{{ movie.title }}</h1>
+              
+              <button class="heart-btn" @click="toggleLike" :class="{ 'is-active': isLiked }">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="heart-icon">
+                  <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                </svg>
+              </button>
+            </div>
             <div class="meta-tags">
               <span class="tag">{{ movie.release_date?.split('-')[0] }}</span>
               <span class="tag rating">★ {{ movie.vote_average?.toFixed(1) }}</span>
@@ -53,7 +62,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { tmdbApi } from '@/api/tmdb'; // API 경로 확인
+import { tmdbApi } from '@/api/tmdb';
 
 export default {
   name: 'MovieDetail',
@@ -62,20 +71,56 @@ export default {
     const movie = ref(null);
     const videoKey = ref(null);
     const loading = ref(true);
+    const isLiked = ref(false); // 찜 상태 변수
 
     const getImageUrl = (path) => {
       return path ? `https://image.tmdb.org/t/p/original${path}` : '';
+    };
+
+    // 찜 목록 확인 함수
+    const checkLikeStatus = (movieData) => {
+      const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      isLiked.value = wishlist.some(item => item.id === movieData.id);
+    };
+
+    // 찜 토글(추가/삭제) 함수
+    const toggleLike = () => {
+      if (!movie.value) return;
+
+      let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      
+      if (isLiked.value) {
+        // 이미 찜한 상태면 -> 삭제
+        wishlist = wishlist.filter(item => item.id !== movie.value.id);
+        isLiked.value = false;
+        // alert('찜 목록에서 삭제되었습니다.'); // (선택사항)
+      } else {
+        // 찜 안한 상태면 -> 추가
+        // 목록에 저장할 필수 정보만 객체로 저장
+        const movieToSave = {
+          id: movie.value.id,
+          title: movie.value.title,
+          poster_path: movie.value.poster_path,
+          vote_average: movie.value.vote_average
+        };
+        wishlist.push(movieToSave);
+        isLiked.value = true;
+        // alert('찜 목록에 추가되었습니다!'); // (선택사항)
+      }
+
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
     };
 
     onMounted(async () => {
       const movieId = route.params.id;
       try {
         loading.value = true;
-        // 영화 상세 정보 요청
         const detailRes = await tmdbApi.getMovieDetails(movieId);
         movie.value = detailRes.data;
 
-        // 예고편 영상 요청
+        // 데이터 로드 후 찜 상태 확인
+        checkLikeStatus(movie.value);
+
         try {
           const videoRes = await tmdbApi.getMovieVideos(movieId);
           const trailer = videoRes.data.results.find(v => v.type === 'Trailer') || videoRes.data.results[0];
@@ -91,7 +136,14 @@ export default {
       }
     });
 
-    return { movie, videoKey, loading, getImageUrl };
+    return { 
+      movie, 
+      videoKey, 
+      loading, 
+      getImageUrl, 
+      isLiked, 
+      toggleLike 
+    };
   }
 }
 </script>
@@ -120,7 +172,7 @@ export default {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* 내용 래퍼 (배경 이미지) */
+/* 내용 래퍼 */
 .content-wrapper {
   min-height: 100vh;
   background-size: cover;
@@ -129,14 +181,14 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 50px 20px;
+  padding: 80px 20px;
 }
 
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 5, 16, 0.85); /* 배경 어둡게 */
-  backdrop-filter: blur(8px); /* 블러 효과 */
+  background: rgba(0, 5, 16, 0.85);
+  backdrop-filter: blur(8px);
 }
 
 .movie-info {
@@ -176,14 +228,59 @@ export default {
 }
 
 /* 텍스트 영역 */
+.text-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 제목 + 하트 버튼 영역 스타일 */
+.title-area {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
 .movie-title {
   font-family: 'Orbitron', sans-serif;
   font-size: 3.5rem;
   font-weight: 900;
-  margin-bottom: 20px;
   text-shadow: 0 0 15px rgba(0, 102, 255, 0.6);
   line-height: 1.1;
+  margin: 0; /* 제목 자체 마진 제거 */
 }
+
+/* --- 하트 버튼 스타일 (핵심) --- */
+.heart-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  transition: transform 0.2s;
+}
+
+.heart-btn:hover {
+  transform: scale(1.1);
+}
+
+.heart-icon {
+  width: 40px;
+  height: 40px;
+  /* 기본 상태: 투명하고 테두리만 흰색 (빈 하트) */
+  fill: transparent; 
+  stroke: white;
+  stroke-width: 1.5;
+  transition: all 0.3s ease;
+}
+
+/* 활성화(찜함) 상태: 빨간색으로 채우기 */
+.heart-btn.is-active .heart-icon {
+  fill: #e50914; /* 넷플릭스 레드 */
+  stroke: #e50914;
+  filter: drop-shadow(0 0 10px rgba(229, 9, 20, 0.6)); /* 붉은 글로우 효과 */
+}
+
+/* ----------------------------- */
 
 .meta-tags {
   display: flex;
@@ -228,7 +325,6 @@ export default {
   margin-bottom: 40px;
 }
 
-/* 예고편 */
 .trailer-title {
   font-family: 'Orbitron', sans-serif;
   margin-bottom: 15px;
@@ -237,7 +333,7 @@ export default {
 
 .video-container {
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 비율 */
+  padding-bottom: 56.25%;
   height: 0;
   overflow: hidden;
   border-radius: 8px;
@@ -252,7 +348,8 @@ export default {
 @media (max-width: 900px) {
   .info-grid { grid-template-columns: 1fr; }
   .poster-img { max-width: 300px; margin: 0 auto; display: block; }
-  .movie-title { font-size: 2.5rem; text-align: center; }
+  .title-area { justify-content: center; flex-wrap: wrap; text-align: center; }
+  .movie-title { font-size: 2.5rem; }
   .meta-tags { justify-content: center; }
 }
 </style>
