@@ -3,6 +3,7 @@ import MovieList from '@/components/MovieList.vue'
 import MovieDetail from '@/views/MovieDetail.vue'
 import SearchPage from '@/views/SearchPage.vue'
 import SignInPage from '@/views/SignIn.vue'
+import HomeView from '@/views/HomeView.vue'
 import WishlistPage from '@/views/WishlistPage.vue'
 import PopularPage from '../views/PopularPage.vue'
 
