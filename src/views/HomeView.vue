@@ -3,7 +3,7 @@
     
     <div v-if="isLoading" class="loading-screen">
       <div class="cyber-spinner"></div>
-      <p>SYSTEM INITIALIZING...</p>
+      <p>WAITING.....</p>
     </div>
 
     <div v-else class="content-wrapper">
