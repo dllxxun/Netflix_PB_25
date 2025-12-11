@@ -19,7 +19,7 @@ const routes = [
   { 
     path: '/home',
     name: 'Home',
-    component: MovieList,
+    component: HomeView,
     meta: { requiresAuth: true }
   },
   {
