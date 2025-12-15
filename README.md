@@ -1,6 +1,6 @@
 # netclone | yeon_PB_25
 
-![Project Banner](./public/og-image.png)
+![Project Banner](./public/image.png)
 
 > **NETCLONE - yeon_PB_25**
 > 지금 접속해서 경험해보세요. 사이버펑크 스타일로 재해석한 넷플릭스 클론 프로젝트입니다.
