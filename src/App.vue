@@ -1,9 +1,16 @@
 <template>
   <div id="app">
+    <div class="overlay" v-if="isMenuOpen" @click="toggleMenu"></div>
     <div class="app-overlay"></div>
 
     <nav class="navigation">
       <div class="nav-left">
+        <button class="hamburger-btn" @click="toggleMenu">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+
         <span class="brand-logo" @click="goToHome">
           NETCLONE <span class="version">yeon</span>
         </span>
@@ -17,7 +24,7 @@
       <div class="nav-right">
         <div v-if="isLoggedIn" class="user-menu">
           <span class="icon-btn search-btn" @click="goToSearch">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
               <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
             </svg>
           </span>
@@ -42,6 +49,19 @@
       </div>
     </nav>
 
+    <div class="mobile-sidebar" :class="{ 'open': isMenuOpen }">
+      <div class="sidebar-header">
+        <span class="sidebar-logo">MENU</span>
+        <button class="close-btn" @click="toggleMenu">✕</button>
+      </div>
+      <div class="sidebar-links">
+        <span @click="goToHome">홈</span>
+        <span @click="goToPopular">대세 콘텐츠</span>
+        <span @click="goToWishlist">내가 찜한 콘텐츠</span>
+        <span v-if="!isLoggedIn" @click="$router.push('/signin')">로그인</span>
+      </div>
+    </div>
+
     <div class="main-content">
       <router-view></router-view>
     </div>
@@ -54,7 +74,8 @@ export default {
     return {
       isLoggedIn: false,
       userNickname: '',
-      showDropdown: false
+      showDropdown: false,
+      isMenuOpen: false // [추가] 메뉴 열림/닫힘 상태
     }
   },
   created() {
@@ -65,6 +86,10 @@ export default {
     }
   },
   methods: {
+    // [추가] 메뉴 토글 함수
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
+    },
     async handleKakaoLogin(code) {
       try {
         console.log('인증 코드:', code);
@@ -92,21 +117,26 @@ export default {
     },
     goToHome() {
       if (this.$route.path !== '/home') this.$router.push('/home')
+      this.isMenuOpen = false; // 이동 시 메뉴 닫기
     },
     goToWishlist() {
       this.$router.push('/wishlist')
+      this.isMenuOpen = false; // 이동 시 메뉴 닫기
     },
     goToSearch() {
       this.$router.push('/search')
+      this.isMenuOpen = false;
     },
     goToPopular() {
       this.$router.push('/popular')
+      this.isMenuOpen = false; // 이동 시 메뉴 닫기
     }
   },
   watch: {
     $route() {
       this.checkLoginStatus()
-      this.showDropdown = false // 페이지 이동 시 드롭다운 닫기
+      this.showDropdown = false 
+      this.isMenuOpen = false // [추가] 페이지 이동 시 사이드바 닫기
     }
   }
 }
@@ -124,10 +154,10 @@ export default {
 }
 
 body {
-  background-color: #000510; /* 딥 다크 네이비 배경 */
+  background-color: #000510;
   color: white;
   font-family: 'Noto Sans KR', sans-serif;
-  overflow-x: hidden; /* 가로 스크롤 방지 */
+  overflow-x: hidden;
 }
 
 #app {
@@ -137,7 +167,7 @@ body {
 
 /* --- 네비게이션 바 (Glassmorphism) --- */
 .navigation {
-  position: fixed; /* 상단 고정 */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -147,11 +177,9 @@ body {
   justify-content: space-between;
   align-items: center;
   z-index: 1000;
-  
-  /* 반투명 유리 효과 */
   background: rgba(0, 5, 16, 0.7);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0, 102, 255, 0.3); /* 파란색 하단 라인 */
+  border-bottom: 1px solid rgba(0, 102, 255, 0.3);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
 }
@@ -211,8 +239,12 @@ body {
 }
 
 .icon-btn {
-  width: 24px;
-  height: 24px;
+  /* [수정] 버튼 크기 축소 */
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   color: #ccc;
   transition: all 0.3s;
@@ -276,10 +308,9 @@ body {
 .dropdown-item:hover {
   background: rgba(0, 102, 255, 0.2);
   color: white;
-  padding-left: 25px; /* 살짝 밀리는 효과 */
+  padding-left: 25px;
 }
 
-/* 메인 컨텐츠 여백 (네비게이션 높이만큼) */
 .main-content {
   padding-top: 70px;
   min-height: 100vh;
@@ -293,9 +324,110 @@ body {
   opacity: 0;
 }
 
-/* 반응형 */
+/* ========================================= */
+/* [추가] 모바일 반응형 및 사이드바 스타일 */
+/* ========================================= */
+
+/* 1. 햄버거 버튼 (PC에선 숨김) */
+.hamburger-btn {
+  display: none; /* 기본 숨김 */
+  background: none;
+  border: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+.hamburger-btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 2. 모바일 사이드바 */
+.mobile-sidebar {
+  position: fixed;
+  top: 0;
+  left: -260px; /* 화면 밖으로 숨김 */
+  width: 260px;
+  height: 100vh;
+  background: rgba(0, 5, 16, 0.98); /* 배경색 */
+  border-right: 1px solid #0066FF; /* 네온 테두리 */
+  z-index: 2000;
+  transition: left 0.3s ease; /* 부드럽게 슬라이드 */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-sidebar.open {
+  left: 0; /* 열리면 화면 안으로 */
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 15px;
+}
+
+.sidebar-logo {
+  font-family: 'Orbitron', sans-serif;
+  color: #0066FF;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.sidebar-links span {
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #ccc;
+}
+
+.sidebar-links span:hover {
+  color: #0066FF;
+  padding-left: 10px;
+}
+
+/* 3. 배경 어둡게 (Overlay) */
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1500;
+}
+
+/* 4. 미디어 쿼리 (화면 폭 768px 이하일 때 적용) */
 @media (max-width: 768px) {
-  .nav-links { display: none; } /* 모바일에서 메뉴 숨기기 (추후 햄버거 메뉴 필요) */
-  .brand-logo { font-size: 1.4rem; }
+  .nav-links { 
+    display: none; /* 기존 상단 메뉴 숨김 */
+  }
+  
+  .hamburger-btn {
+    display: block; /* 햄버거 버튼 보이기 */
+  }
+
+  .brand-logo {
+    font-size: 1.4rem;
+    margin-right: 0;
+  }
 }
 </style>
