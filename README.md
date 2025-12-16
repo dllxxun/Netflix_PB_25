@@ -3,7 +3,8 @@
 ![Project Banner](./public/image.png)
 
 > **NETCLONE - yeon_PB_25**
-> GPT와 함께 Front-End Demo Site 개발, NETFLIX CLOE 만들기
+> 
+GPT와 함께 Front-End Demo Site 개발, NETFLIX CLOE 만들기
 
 ## 🔗 배포 링크
 👉 [https://netclone-25.netlify.app/movielist.github.io/home](https://netclone-25.netlify.app/movielist.github.io/home)
