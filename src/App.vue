@@ -47,6 +47,7 @@
           <span class="nav-item" @click="$router.push('/signin')">LOGIN</span>
         </div>
       </div>
+      <div class="mouse-follower" ref="mouseFollower"></div>
     </nav>
 
     <div class="mobile-sidebar" :class="{ 'open': isMenuOpen }">
@@ -79,6 +80,10 @@ export default {
       userId: '', 
       showDropdown: false,
       isMenuOpen: false, // [추가] 메뉴 열림/닫힘 상태
+      mouseX: 0,
+      mouseY: 0,
+      followerX: 0,
+      followerY: 0,
       scrollProgress: 0, isScrolled: false, // 동적 속성
       mouseX: 0, mouseY: 0, // 마우스 팔로우
       isVisible: {} // IntersectionObserver
@@ -168,7 +173,30 @@ export default {
     handleScroll() { /* 동적 속성 변경 */ },
     handleMouseMove(e) { /* 마우스 팔로우 */ },
     initScrollAnimations() { /* 일시정지/재생 */ },
-    lerp(start, end, t) { return start * (1 - t) + end * t; }
+    lerp(start, end, t) { return start * (1 - t) + end * t; },
+
+    //  마우스 팔로우 이벤트 핸들링 (핵심!)
+    handleMouseMove(e) {
+      this.mouseX = e.clientX;
+      this.mouseY = e.clientY;
+      
+      // 부드러운 lerp로 따라가기
+      this.followerX += (this.mouseX - this.followerX) * 0.12;
+      this.followerY += (this.mouseY - this.followerY) * 0.12;
+      
+      // DOM 업데이트
+      if (this.$refs.mouseFollower) {
+        const navRect = this.$refs.navRef.getBoundingClientRect();
+        this.$refs.mouseFollower.style.transform = `
+          translate3d(${this.followerX - navRect.left - 10}px, 
+                     ${this.followerY - navRect.top - 10}px, 0)
+        `;
+      }
+    },
+    // ✅ lerp 헬퍼 함수 (이미 있으면 생략)
+    lerp(start, end, amt) {
+      return start * (1 - amt) + end * amt;
+    }
   },
   watch: {
     $route() {
@@ -511,4 +539,54 @@ body {
   opacity: 0;
   transform: translateX(30px);
 }
+
+/*  마우스 팔로우 네온 라인 (nav 맨 아래에 추가) */
+.mouse-follower {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, #00d4ff 0%, #0066FF 70%);
+  border-radius: 50%;
+  box-shadow: 
+    0 0 15px #00d4ff,
+    0 0 30px #0066FF,
+    0 0 50px rgba(0, 102, 255, 0.5),
+    inset 0 0 5px rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  z-index: 1001;
+  transition: transform 0.08s ease-out;
+  will-change: transform;
+  opacity: 0;
+  animation: neonPulse 2s ease-in-out infinite alternate;
+}
+
+.navigation:hover .mouse-follower,
+.mouse-follower.moved {
+  opacity: 1;
+}
+
+/* 네온 펄스 애니메이션 */
+@keyframes neonPulse {
+  0% {
+    box-shadow: 
+      0 0 15px #00d4ff,
+      0 0 30px #0066FF,
+      0 0 50px rgba(0, 102, 255, 0.5);
+    transform: scale(1);
+  }
+  100% {
+    box-shadow: 
+      0 0 20px #00d4ff,
+      0 0 40px #0066FF,
+      0 0 70px rgba(0, 102, 255, 0.7),
+      inset 0 0 10px rgba(255, 255, 255, 0.5);
+    transform: scale(1.2);
+  }
+}
+
+/* 마우스 움직임 감지 */
+.mouse-follower.moved {
+  animation-duration: 1.5s;
+}
+
 </style>
