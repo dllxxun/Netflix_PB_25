@@ -94,7 +94,6 @@ npm run preview # 빌드 확인: http://localhost:4173
 - `main` : 제품 출시 (배포) 브랜치
 - `develop` : 개발 통합 브랜치
 - `feature/*` : 기능 개발
-
       `navigation-mobile` : 모바일
       `search-filtering` : 검색/필터링
       `wishlist-localstorage` : 찜하기
