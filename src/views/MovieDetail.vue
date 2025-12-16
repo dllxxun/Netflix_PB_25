@@ -226,6 +226,9 @@ export default {
   border-radius: 12px;
   box-shadow: 0 0 30px rgba(0, 102, 255, 0.3);
   border: 1px solid rgba(0, 102, 255, 0.2);
+  height: auto; /* 추가 */
+  max-height: 500px; /* 추가 */
+  object-fit: cover; /* 추가 */
 }
 
 /* 텍스트 영역 */

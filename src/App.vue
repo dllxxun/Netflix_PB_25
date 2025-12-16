@@ -281,6 +281,7 @@ body {
 .nav-links {
   display: flex;
   gap: 25px;
+  flex-wrap: wrap;
 }
 
 .nav-item {
@@ -301,7 +302,7 @@ body {
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
 }
 
 .icon-btn {
@@ -479,8 +480,13 @@ body {
   z-index: 1500;
 }
 
-/* 4. 미디어 쿼리 (화면 폭 768px 이하일 때 적용) */
+/* 4. 미디어 쿼리  */
 @media (max-width: 768px) {
+  .nav-left { 
+    flex: 1; 
+    justify-content: space-between;
+  }
+
   .nav-links { 
     display: none; /* 기존 상단 메뉴 숨김 */
   }
