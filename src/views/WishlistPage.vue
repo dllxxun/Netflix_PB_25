@@ -40,14 +40,14 @@ export default {
   },
   created() {
     // Local Storage에서 찜한 목록 불러오기
-    const savedFavorites = localStorage.getItem('favorites')
+    const savedFavorites = localStorage.getItem('wishlist')
     if (savedFavorites) {
       this.favorites = JSON.parse(savedFavorites)
     }
   },
   methods: {
     loadFavorites() {
-      const savedFavorites = localStorage.getItem('favorites')
+      const savedFavorites = localStorage.getItem('wishlist')
       if (savedFavorites) {
         // 중복 제거하여 로드
         const favorites = JSON.parse(savedFavorites)
@@ -62,7 +62,7 @@ export default {
     },
     removeFromFavorites(movieId) {
       this.favorites = this.favorites.filter(movie => movie.id !== movieId)
-      localStorage.setItem('favorites', JSON.stringify(this.favorites))
+      localStorage.setItem('wishlist', JSON.stringify(this.favorites))
     }
   }
 }

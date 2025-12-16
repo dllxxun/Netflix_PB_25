@@ -93,7 +93,7 @@ export default {
         // 이미 찜한 상태면 -> 삭제
         wishlist = wishlist.filter(item => item.id !== movie.value.id);
         isLiked.value = false;
-        // alert('찜 목록에서 삭제되었습니다.'); // (선택사항)
+        alert('찜 목록에서 삭제되었습니다.'); 
       } else {
         // 찜 안한 상태면 -> 추가
         // 목록에 저장할 필수 정보만 객체로 저장
@@ -105,7 +105,7 @@ export default {
         };
         wishlist.push(movieToSave);
         isLiked.value = true;
-        // alert('찜 목록에 추가되었습니다!'); // (선택사항)
+        alert('찜 목록에 추가되었습니다!'); 
       }
 
       localStorage.setItem('wishlist', JSON.stringify(wishlist));
@@ -187,8 +187,9 @@ export default {
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 5, 16, 0.55);
-  backdrop-filter: blur(3px);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px); /* 배경만 블러 */
+  z-index: 1;
 }
 
 .movie-info {
@@ -293,7 +294,7 @@ export default {
   background: rgba(255,255,255,0.1);
   padding: 5px 12px;
   border-radius: 4px;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid #ffffff;
 }
 .rating { color: #FFD700; border-color: #FFD700; }
 .runtime { color: #0066FF; border-color: #0066FF; }
@@ -321,7 +322,7 @@ export default {
 .overview {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: #e0e0e0;
+  color: #ffffff;
   margin-bottom: 40px;
 }
 
