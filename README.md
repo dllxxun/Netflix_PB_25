@@ -3,8 +3,7 @@
 ![Project Banner](./public/image.png)
 
 > **# WSD-Assignment-02 | NETCLONE (yeon_PB_25)**
-
-Vue.js + TMDB API 기반 Netflix 스타일 SPA 영화 사이트
+>Vue.js + TMDB API 기반 Netflix 스타일 SPA 영화 사이트
 
 ## 🔗 배포 링크
 👉 [https://netclone-25.netlify.app/movielist.github.io/home](https://netclone-25.netlify.app/movielist.github.io/home)
@@ -18,8 +17,6 @@ Vue.js + TMDB API 기반 Netflix 스타일 SPA 영화 사이트
 
 ## 📁 프로젝트 구조
 ```
-## 📁 프로젝트 전체 폴더 구조
-
 Netflix_Clone_25/
 ├── .vscode/                 # VSCode 설정
 ├── node_modules/            # 의존성 모듈 (제출 시 제외)
@@ -37,7 +34,6 @@ Netflix_Clone_25/
 │   ├── composables/         # Composition API (로직 분리)
 │   │   ├── useFavorites.js   # LocalStorage와 연동된 위시리스트(찜) 추가·삭제/조회 로직
 │   │   ├── useMovies.js   # TMDB API 호출, 영화 목록/상태/로딩 처리 등 공통 영화 데이터 로직
-
 │   │   └── useMovieSearch.js # 검색어·필터를 받아 TMDB 검색 API 호출하고 결과/에러/로딩을 관리하는 로직
 │   ├── router/              # 라우터 설정
 │   │   └── index.js
@@ -95,10 +91,10 @@ npm run preview # 빌드 확인: http://localhost:4173
 ```
 
 ## 🌿 Gitflow 브랜치 전략
-- 'main' : 제품 출시 (배포) 브랜치
-- 'develop' : 개발 통합 브랜치
-- 'feature/*' : 기능 개발
-   ├── navigation-mobile (모바일)
-   ├── search-filtering (검색/필터링)
-   ├── wishlist-localstorage (찜하기)
-   └── popular-infinite-scroll (대세 콘텐츠)
+- `main` : 제품 출시 (배포) 브랜치
+- `develop` : 개발 통합 브랜치
+- `feature/*` : 기능 개발
+      `navigation-mobile` : 모바일
+      `search-filtering` : 검색/필터링
+      `wishlist-localstorage` : 찜하기
+      `popular-infinite-scroll` : 대세 콘텐츠
