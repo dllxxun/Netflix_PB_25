@@ -78,7 +78,10 @@ export default {
       userNickname: '',
       userId: '', 
       showDropdown: false,
-      isMenuOpen: false // [추가] 메뉴 열림/닫힘 상태
+      isMenuOpen: false, // [추가] 메뉴 열림/닫힘 상태
+      scrollProgress: 0, isScrolled: false, // 동적 속성
+      mouseX: 0, mouseY: 0, // 마우스 팔로우
+      isVisible: {} // IntersectionObserver
     }
   },
   created() {
@@ -143,7 +146,29 @@ export default {
     goToPopular() {
       this.$router.push('/popular')
       this.isMenuOpen = false; // 이동 시 메뉴 닫기
-    }
+    },
+    initScrollAnimations() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const target = entry.target;
+          if (entry.isIntersecting) {
+            // 보이면 애니메이션 재생
+            target.style.animationPlayState = 'running';
+            target.classList.add('animate-in');
+          } else {
+            // 안 보이면 일시정지
+            target.style.animationPlayState = 'paused';
+          }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.movie-card, .nav-item, .cyber-btn').forEach(el => {
+        observer.observe(el);
+      });
+    },
+    handleScroll() { /* 동적 속성 변경 */ },
+    handleMouseMove(e) { /* 마우스 팔로우 */ },
+    initScrollAnimations() { /* 일시정지/재생 */ },
+    lerp(start, end, t) { return start * (1 - t) + end * t; }
   },
   watch: {
     $route() {
