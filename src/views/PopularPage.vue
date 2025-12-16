@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import TableView from '@/components/TableView.vue'
 import { tmdbApi } from '@/api/tmdb'
 
 export default {
