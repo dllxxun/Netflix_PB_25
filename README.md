@@ -3,7 +3,7 @@
 ![Project Banner](./public/image.png)
 
 > **NETCLONE - yeon_PB_25**
-> 지금 접속해서 경험해보세요. 사이버펑크 스타일로 재해석한 넷플릭스 클론 프로젝트입니다.
+> GPT와 함께 Front-End Demo Site 개발, NETFLIX CLOE 만들기
 
 ## 🔗 배포 링크
 👉 [https://netclone-25.netlify.app/movielist.github.io/home](https://netclone-25.netlify.app/movielist.github.io/home)
