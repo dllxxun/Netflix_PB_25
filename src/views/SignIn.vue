@@ -11,6 +11,7 @@
 
         <transition name="glitch-fade" mode="out-in">
           
+          <!--로그인 폼-->
           <form v-if="isLogin" @submit.prevent="handleLogin" key="login">
             <h1 class="brand-title">NETCLONE <span class="version">yeon</span></h1>
             <h2 class="form-title">SYSTEM ACCESS</h2>
@@ -61,7 +62,8 @@
               </p>
             </div>
           </form>
-
+          
+          <!--회원가입폼-->
           <form v-else @submit.prevent="handleRegister" key="register">
             <h1 class="brand-title">NETFLIX <span class="version">2077</span></h1>
             <h2 class="form-title">NEW USER REGISTRY</h2>
@@ -156,7 +158,8 @@ export default {
       loginForm: {
         email: '',
         password: '',
-        rememberMe: false
+        saveId: false,      // 아이디 저장
+        keepLoggedIn: false // 로그인 상태 유지
       },
       registerForm: {
         nickname: '',
@@ -165,6 +168,14 @@ export default {
         confirmPassword: '',
         termsAgreed: false
       }
+    }
+  },
+  mounted() {
+    // 페이지 로드 시 저장된 아이디 불러오기
+    const savedId = localStorage.getItem('savedId');
+    if (savedId) {
+      this.loginForm.email = savedId;
+      this.loginForm.saveId = true;
     }
   },
   methods: {
@@ -176,18 +187,31 @@ export default {
       }
       return true
     },
+    // LocalStorage 완전 구현된 로그인
     handleLogin() {
-      const storedEmail = localStorage.getItem('userEmail')
-      const storedPassword = localStorage.getItem('userPassword')
+      // 기존 저장된 사용자 정보 확인
+      const storedEmail = localStorage.getItem('userEmail');
+      const storedPassword = localStorage.getItem('userPassword');
 
       if (this.loginForm.email === storedEmail && this.loginForm.password === storedPassword) {
-        localStorage.setItem('isLoggedIn', 'true')
-        if (this.loginForm.rememberMe) {
-          localStorage.setItem('rememberMe', 'true')
+        //  아이디 저장 처리
+        if (this.loginForm.saveId) {
+          localStorage.setItem('savedId', this.loginForm.email);
+        } else {
+          localStorage.removeItem('savedId');
         }
-        this.$router.push('/home')
+
+        //  로그인 상태 유지 처리
+        if (this.loginForm.keepLoggedIn) {
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('userId', this.loginForm.email);
+          localStorage.setItem('userNickname', storedEmail.split('@')[0]); // 닉네임 자동 생성
+        }
+
+        alert('ACCESS GRANTED!');
+        this.$router.push('/home');
       } else {
-        alert('ACCESS DENIED: 정보가 일치하지 않습니다.')
+        alert('ACCESS DENIED: 정보가 일치하지 않습니다.');
       }
     },
     handleRegister() {
@@ -528,5 +552,40 @@ export default {
   opacity: 0;
   transform: scale(0.98);
   filter: blur(5px);
+}
+
+/*체크박스 추가*/
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #ccc;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-label input {
+  accent-color: #0066FF;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.checkmark {
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(0, 102, 255, 0.5);
+  border-radius: 3px;
+  display: inline-block;
+  position: relative;
+  margin-right: 8px;
 }
 </style>

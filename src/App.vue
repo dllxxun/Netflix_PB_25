@@ -63,7 +63,9 @@
     </div>
 
     <div class="main-content">
-      <router-view></router-view>
+      <transition name="page-slide" mode="out-in">
+        <router-view></router-view>
+      </transition>
     </div>
   </div>
 </template>
@@ -74,6 +76,7 @@ export default {
     return {
       isLoggedIn: false,
       userNickname: '',
+      userId: '', 
       showDropdown: false,
       isMenuOpen: false // [추가] 메뉴 열림/닫힘 상태
     }
@@ -90,31 +93,41 @@ export default {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
     },
-    async handleKakaoLogin(code) {
-      try {
-        console.log('인증 코드:', code);
-        this.$router.push('/home');
-      } catch (error) {
-        console.error('카카오 로그인 실패:', error);
-        alert('로그인에 실패했습니다.');
-      }
-    },
     checkLoginStatus() {
-      this.isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
-      if (this.isLoggedIn) {
-        this.userNickname = localStorage.getItem('userNickname')
+      const isLoggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
+      this.isLoggedIn = isLoggedInStatus;
+      
+      if (isLoggedInStatus) {
+        this.userId = localStorage.getItem('userId') || '';
+        this.userNickname = localStorage.getItem('userNickname') || 
+                            (this.userId ? this.userId.split('@')[0] : 'User');
+      } else {
+        // 로그아웃 상태 초기화
+        this.userId = '';
+        this.userNickname = '';
       }
     },
     toggleDropdown() {
       this.showDropdown = !this.showDropdown
     },
     async handleLogout() {
-      localStorage.removeItem('isLoggedIn')
-      localStorage.removeItem('rememberMe')
-      this.isLoggedIn = false
-      this.showDropdown = false
-      this.$router.push('/signin')
+      // 모든 로그인 관련 LocalStorage 항목 제거
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('userNickname');
+      localStorage.removeItem('savedId');  // 아이디 저장도 함께 초기화
+      
+      // 상태 초기화
+      this.isLoggedIn = false;
+      this.userNickname = '';
+      this.userId = '';
+      this.showDropdown = false;
+      this.isMenuOpen = false;
+      
+      alert('LOGGED OUT SUCCESSFULLY');
+      this.$router.push('/signin');
     },
+
     goToHome() {
       if (this.$route.path !== '/home') this.$router.push('/home')
       this.isMenuOpen = false; // 이동 시 메뉴 닫기
@@ -324,10 +337,8 @@ body {
   opacity: 0;
 }
 
-/* ========================================= */
-/* [추가] 모바일 반응형 및 사이드바 스타일 */
-/* ========================================= */
 
+/* [추가] 모바일 반응형 및 사이드바 스타일 */
 /* 1. 햄버거 버튼 (PC에선 숨김) */
 .hamburger-btn {
   display: none; /* 기본 숨김 */
@@ -429,5 +440,50 @@ body {
     font-size: 1.4rem;
     margin-right: 0;
   }
+}
+
+/* 활성 메뉴 */
+.nav-item.active {
+  color: #0066FF !important;
+  background: rgba(0, 102, 255, 0.2);
+  box-shadow: 0 0 15px rgba(0, 102, 255, 0.3);
+}
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #0066FF;
+  animation: underlineExpand 0.4s ease forwards;
+  transform: translateX(-50%);
+}
+@keyframes underlineExpand {
+  to { width: 80%; }
+}
+
+/* 사이드바 메뉴 호버 */
+.sidebar-links span {
+  padding: 12px 20px;
+  border-radius: 8px;
+  position: relative;
+}
+.sidebar-links span:hover {
+  color: #0066FF;
+  background: rgba(0, 102, 255, 0.2);
+  transform: translateX(10px);
+  box-shadow: 0 5px 15px rgba(0, 102, 255, 0.2);
+}
+
+/* 라우터 전환 애니메이션 */
+.page-slide-enter-active,
+.page-slide-leave-active {
+  transition: all 0.3s ease;
+}
+.page-slide-enter-from,
+.page-slide-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 </style>
