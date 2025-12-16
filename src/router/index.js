@@ -21,7 +21,7 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: HomeView,
-    meta: { requiresAuth: true }
+    //meta: { requiresAuth: true }
   },
   {
     path: '/movie/:id',
@@ -51,10 +51,17 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const isLoggedIn = localStorage.getItem('isLoggedIn')
-  if (to.path !== '/signin' && !isLoggedIn) {
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' 
+  // /signin 가고 있으면 무조건 통과
+  if (to.path === '/signin') {
+    next()
+  } 
+  // 다른 페이지인데 로그아웃이면 /signin으로
+  else if (!isLoggedIn) {
     next('/signin')
-  } else {
+  } 
+  // 로그인 상태면 정상 이동
+  else {
     next()
   }
 })

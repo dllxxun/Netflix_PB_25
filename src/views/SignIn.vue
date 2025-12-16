@@ -2,7 +2,6 @@
   <div class="auth-container">
     <div class="cyber-grid-bg"></div>
     <div class="background-overlay"></div>
-
     <div class="auth-wrapper">
       <div class="hologram-box" :class="{ 'slide-up': !isLogin }">
         
@@ -65,7 +64,7 @@
           
           <!--회원가입폼-->
           <form v-else @submit.prevent="handleRegister" key="register">
-            <h1 class="brand-title">NETFLIX <span class="version">2077</span></h1>
+            <h1 class="brand-title">NETCLONE <span class="version">yeon</span></h1>
             <h2 class="form-title">NEW USER REGISTRY</h2>
 
             <div class="input-group-animate delay-1">
