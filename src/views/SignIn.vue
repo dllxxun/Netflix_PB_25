@@ -588,4 +588,21 @@ export default {
   position: relative;
   margin-right: 8px;
 }
+
+.glitch-slide-enter-active,
+.glitch-slide-leave-active {
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: absolute;
+  width: 100%;
+}
+.glitch-slide-enter-from {
+  opacity: 0;
+  transform: translateX(50px) scale(0.95);
+  filter: blur(4px);
+}
+.glitch-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-50px) scale(0.95);
+  filter: blur(4px);
+}
 </style>
