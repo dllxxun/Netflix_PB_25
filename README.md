@@ -77,23 +77,47 @@ Netflix_Clone_25/
 
 
 ## 🚀 설치 및 실행 가이드
+### 1. 프로젝트 클론 
+``` bash
+git clone https://github.com/dllxxun/Netflix_PB_25.git
+cd Netflix_PB_25
+```
+로컬에 소스를 내려받습니다.
+
+### 2. 패키지 설치
 ``` bash
 npm install
 ```
+프로젝트에 필요한 모든 의존성을 설치합니다.
+
+### 3. 개발 서버 실행 (로컬 개발)
+핫 리로드가 적용된 개발 서버를 실행합니다.
 ``` bash
-npm run dev # 개발 서버: http://localhost:5173
+npm run dev 
 ```
+- 기본 접속 주소: `http://localhost:5173`
+- 코드 수정 시, 브라우저가 자동으로 새로고침됩니다.
+
+### 4. 프로덕션 빌드 생성
+배포용 정적 파일을 생성합니다.
 ``` bash
-npm run build # 정적 파일 생성: dist/
+npm run build 
 ```
+- 빌드 결과물은 `dist/` 폴더에 생성됩니다.
+- Netlify/GitHub Pages 등 정적 호스팅에 이 폴더를 사용합니다.
+
+### 5. 빌드 결과 로컬에서 미리보기
 ``` bash
-npm run preview # 빌드 확인: http://localhost:4173
+npm run preview 
 ```
+- 기본 접속 주소: `http://localhost:4173`
+- 실제 배포 환경과 거의 동일한 형태로 동작합니다.
+
 
 ## 🌿 Gitflow 브랜치 전략
 - `main` : 제품 출시 (배포) 브랜치
 - `develop` : 개발 통합 브랜치
-- `feature/*` : 기능 개발
+- `feature` : 기능 개발
       `navigation-mobile` : 모바일
       `search-filtering` : 검색/필터링
       `wishlist-localstorage` : 찜하기
