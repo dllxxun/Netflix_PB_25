@@ -96,9 +96,6 @@ npm run preview # 빌드 확인: http://localhost:4173
 - `feature/*` : 기능 개발
 
       `navigation-mobile` : 모바일
-
       `search-filtering` : 검색/필터링
-
       `wishlist-localstorage` : 찜하기
-      
       `popular-infinite-scroll` : 대세 콘텐츠
