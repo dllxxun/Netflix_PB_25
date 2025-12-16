@@ -187,8 +187,8 @@ export default {
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 5, 16, 0.85);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 5, 16, 0.6);
+  backdrop-filter: blur(4px);
 }
 
 .movie-info {
